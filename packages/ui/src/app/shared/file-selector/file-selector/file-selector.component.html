@@ -1,0 +1,25 @@
+<div
+  class="uploading-box"
+  [class.file-hovered]="fileHovered"
+  [class.disabled]="disabled"
+>
+  <input
+    type="file"
+    (change)="onFileChange($event)"
+    hidden
+    #fileInput
+    [accept]="acceptString"
+  />
+  <div class="upload-text" (click)="fileInput.click()">
+    <img src="../../../assets/images/upload-icon.svg" alt="" />
+    <div class="drag-drop-lbl">Drag and drop or</div>
+    <div class="drag-drop-lbl"></div>
+    <div class="mb-10 mt-10">
+      <span class="browse-link">Browse</span>
+      to choose a file
+    </div>
+  </div>
+</div>
+<div class="small-text">
+  File Supported: <span class="color-black">Docx</span>
+</div>

@@ -1,0 +1,116 @@
+<mat-dialog-title
+  fxLayout="row"
+  fxLayoutGap="0.75rem"
+  class="dailog-header"
+  fxLayoutAlign="space-between center"
+>
+  <div fxFlex="100" class="dailog-title">Upload Resume</div>
+  <mat-icon aria-label="Close dialog" mat-dialog-close class="dailog-close"
+    >close</mat-icon
+  >
+</mat-dialog-title>
+<ng-container *ngIf="isEligible === undefined; else afterResult">
+  <div class="job-profile">
+    <div class="color-lightgrey small-text">Applying For:</div>
+    <div
+      fxLayout="row"
+      class="job-info"
+      fxLayoutAlign="space-between center"
+      fxLayoutGap="10px"
+    >
+      <div
+        class="job-symbol job-icon"
+        [ngClass]="colors.getColorClassByName(profile.name)"
+      >
+        {{ initials.fromName(profile.name) }}
+      </div>
+      <div fxFlex="grow" class="job-title">{{ profile.name }}</div>
+    </div>
+  </div>
+  <mat-dialog-content class="dialog-content">
+    <div *ngIf="!file">
+      <file-selector
+        [disabled]="false"
+        (valueChange)="fileChange($event)"
+      ></file-selector>
+    </div>
+
+    <div *ngIf="file">
+      <div
+        class="uploaded-file"
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap="10px"
+      >
+        <img
+          src="../../../../assets/images/pdf-icon.svg"
+          alt="file type"
+          class="upload-icon"
+        />
+        <div fxFlex="grow">
+          <div class="file-name">
+            {{ file.name }}
+          </div>
+          <div class="file-info">
+            <span class="date">{{ file.lastModified }} </span>
+            <span class="size">{{ file.size }}</span>
+          </div>
+        </div>
+        <button
+          mat-icon-button
+          matTooltip="Delete"
+          aria-label="delete file button"
+          tabIndex="-1"
+          (click)="file = null"
+        >
+          <img src="../../../../assets/images/trash.svg" alt="delete" />
+        </button>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-footer" align="end" fxLayoutGap="10px">
+    <button
+      mat-button
+      mat-dialog-close
+      color="primary"
+      class="btn-lg"
+      tabIndex="-1"
+    >
+      Cancel
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      class="btn-lg"
+      [disabled]="!file"
+      (click)="uploadCV()"
+      *ngIf="!processing"
+    >
+      Upload
+    </button>
+    <button
+      *ngIf="processing"
+      mat-flat-button
+      color="primary"
+      class="btn-lg"
+      [disabled]="true"
+    >
+      Upload <mat-icon><mat-spinner diameter="15"> </mat-spinner></mat-icon>
+    </button>
+  </mat-dialog-actions>
+</ng-container>
+
+<ng-template #afterResult>
+  <div class="job-profile" *ngIf="isEligible">
+    <div class="color-lightgrey small-text">
+      You seem eligible for an interview, you will be redirected to the
+      interview call in {{ timeLeft }} seconds
+    </div>
+  </div>
+  <div class="job-profile" *ngIf="!isEligible">
+    <div class="color-lightgrey small-text">
+      THe candidate does not seem eligible for an interview
+    </div>
+  </div>
+</ng-template>

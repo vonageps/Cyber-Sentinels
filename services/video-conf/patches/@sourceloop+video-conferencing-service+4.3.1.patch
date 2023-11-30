@@ -1,0 +1,13 @@
+diff --git a/node_modules/@sourceloop/video-conferencing-service/dist/providers/vonage/vonage.service.js b/node_modules/@sourceloop/video-conferencing-service/dist/providers/vonage/vonage.service.js
+index a462daf..4b8d1cd 100644
+--- a/node_modules/@sourceloop/video-conferencing-service/dist/providers/vonage/vonage.service.js
++++ b/node_modules/@sourceloop/video-conferencing-service/dist/providers/vonage/vonage.service.js
+@@ -64,7 +64,7 @@ let VonageService = class VonageService {
+             mediaMode: sessionCreationOptions.mediaMode,
+             archiveMode: sessionCreationOptions.archiveMode,
+             sessionId: sessionResponse.sessionId,
+-            isArchived: Boolean(sessionCreationOptions.archiveMode),
++            isArchived: Boolean(sessionCreationOptions.archiveMode === enums_1.VonageEnums.ArchiveMode.Always),
+         };
+     }
+     async getToken(sessionId, options) {

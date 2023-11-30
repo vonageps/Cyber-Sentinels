@@ -1,0 +1,15 @@
+<div *ngIf="!error">
+  <div class="interviewer-area" #interviewerDiv>
+    <video
+      style="width: 100%; display: block; height: 100%; background-color: #333"
+      webkit-playsinline
+      playsinline
+      crossorigin="use-credentials"
+      id="myvideo"
+      autoplay
+    ></video>
+  </div>
+  <div class="candidate-area">
+    <div #candidateDiv></div>
+  </div>
+</div>

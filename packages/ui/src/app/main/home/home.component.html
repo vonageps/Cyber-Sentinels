@@ -1,0 +1,66 @@
+<div class="inner-home-container">
+  <div
+    class="hello-content"
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    fxLayoutGap="4px"
+  >
+    <div
+      class="hello-text"
+      fxLayout="row"
+      fxLayoutGap="9px"
+      fxLayoutAlign="start center"
+    >
+      <h1 class="title">Hi, Good Morning!</h1>
+      <div class="hello-symbol">
+        <img src="../../../assets/images/hello-hand.svg" alt="" />
+      </div>
+    </div>
+    <p class="hello-desc">Career opportunities for you</p>
+  </div>
+  <div class="grid-container">
+    <div class="item" *ngFor="let profile of profiles">
+      <mat-card
+        class="job-card"
+        fxLayout="column"
+        fxLayoutAlign="space-between start"
+        fxLayoutGap="12px"
+      >
+        <div
+          class="job-symbol"
+          [ngClass]="colors.getColorClassByName(profile.name)"
+        >
+          {{ this.initials.fromName(profile.name) }}
+        </div>
+        <div
+          class="job-details"
+          fxLayout="column"
+          fxLayoutAlign="start start"
+          fxLayoutGap="6px"
+        >
+          <h3 class="u-name">{{ profile.name }}</h3>
+          <p class="status-txt">{{ profile.createdOn }}</p>
+        </div>
+
+        <div
+          class="job-action"
+          fxLayout="row"
+          fxLayoutAlign="end center"
+          fxLayoutGap="8px"
+        >
+          <button
+            mat-button
+            color="primary"
+            class="btn"
+            (click)="openUploadDialog(profile)"
+          >
+            <div class="btn-inner" fxFlex="row" fxLayoutAlign="start center">
+              <span>Apply Now</span>
+              <img src="../../../assets/images/arrow-right.svg" alt="" />
+            </div>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

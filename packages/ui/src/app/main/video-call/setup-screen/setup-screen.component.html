@@ -1,0 +1,73 @@
+<div class="video-call-container">
+    <div class="v-card" fxLayout="column">
+      <div class="v-card-hdr" fxLayout="column" fxLayoutGap="8px">
+        <div class="title">Hi, Candidate</div>
+        <div class="sub-title">
+          Your recruiter has been notified that you are here. Please wait while we
+          connect you.
+        </div>
+      </div>
+      <div class="v-card-content" fxLayout="row">
+        <div class="v-card-left" fxFlex>
+          <video #videoArea playsinline autoplay></video>
+        </div>
+        <div class="v-card-right" fxFlex="336px">
+          <div class="note">
+            Please check your settings before joining the call!
+          </div>
+          <div class="settings">
+            <div class="field" fxLayout="column" fxLayoutGap="8px">
+              <mat-label class="input-label">
+                <span class="input-label-value">Camera</span></mat-label
+              >
+              <mat-form-field appearance="outline">
+                <mat-select placeholder="Select" [value]="selectedVideoTrack">
+                  <mat-option [value]="track.getSettings().deviceId" *ngFor="let track of videoTracks" (click)="onSelectVideoTrack(track)">
+                    <span>{{ track.label }}</span>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="field" fxLayout="column" fxLayoutGap="8px">
+              <mat-label class="input-label">
+                <span class="input-label-value">Microphone</span></mat-label
+              >
+              <mat-form-field appearance="outline">
+                <mat-select placeholder="Select" [value]="selectedAudioTrack">
+                  <mat-option [value]="track.getSettings().deviceId" *ngFor="let track of audioTracks"  (click)="onSelectAudioTrack(track)">
+                    <span>{{track.label}}</span>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="v-card-action"
+        fxLayout="row"
+        fxLayoutAlign="end center"
+        fxLayoutGap="1rem"
+      >
+        <button
+          class="color-primary btn-lg"
+          mat-button
+          color="primary"
+          tabIndex="-1"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+        <button
+          class="bg-color-primary btn-lg"
+          mat-flat-button
+          color="primary"
+          [disabled]="!selectedVideoTrack || !selectedAudioTrack"
+          (click)="join()"
+        >
+          Join Call
+        </button>
+      </div>
+    </div>
+  </div>
+  

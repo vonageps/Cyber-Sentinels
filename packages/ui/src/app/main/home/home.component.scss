@@ -1,0 +1,163 @@
+@import "../../../assets/scss/variables.scss";
+
+.inner-home-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1232px;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.hello-content {
+  padding-top: 100px;
+  @media (max-width: 1000px) {
+    padding-top: 50px;
+  }
+
+  .hello-text {
+    .title {
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 41px;
+      margin: 0;
+    }
+  }
+
+  .hello-desc {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 0;
+  }
+}
+
+.grid-container {
+  margin-top: 35px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  @media (max-width: 1400px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 1050px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 510px) {
+    grid-template-columns: 1fr;
+  }
+
+  .item {
+    &:hover {
+      .job-symbol {
+        background-color: white !important;
+
+        img {
+          filter: brightness(0) invert(1);
+          width: 2.875rem;
+        }
+      }
+
+      .job-details {
+        h3,
+        p {
+          color: $white !important;
+        }
+      }
+
+      .job-action {
+        .btn {
+          background-color: $white;
+        }
+      }
+    }
+
+    &:nth-child(1):hover .job-card {
+      border-color: $medium-purple;
+      background-color: $medium-purple;
+    }
+
+    &:nth-child(2):hover .job-card {
+      border-color: $red;
+      background-color: $red;
+    }
+
+    &:nth-child(3):hover .job-card {
+      border-color: $green;
+      background-color: $green;
+    }
+
+    &:nth-child(4):hover .job-card {
+      border-color: $amber;
+      background-color: $amber;
+    }
+
+    &:nth-child(5):hover .job-card {
+      border-color: $yellow;
+      background-color: $yellow;
+    }
+
+    &:nth-child(6):hover .job-card {
+      border-color: $blue;
+      background-color: $blue;
+    }
+
+    .job-card {
+      height: 100%;
+      border-radius: 8px;
+      padding: 24px;
+      justify-content: space-between;
+      border: 1px solid $light-grey;
+      box-shadow: none;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      transition: all ease 0.2s;
+      -moz-transition: all ease 0.2s;
+      -webkit-transition: all ease 0.2s;
+
+      .job-symbol {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        transition: all ease 0.2s;
+        -moz-transition: all ease 0.2s;
+        -webkit-transition: all ease 0.2s;
+      }
+
+      .job-details {
+        flex: 1;
+
+        h3 {
+          font-size: 20px;
+          font-weight: 600;
+          line-height: 25px;
+          color: $text-color;
+        }
+
+        p {
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 18px;
+          color: $text-color-light;
+        }
+      }
+
+      .job-action {
+        width: 100%;
+
+        .btn-inner {
+          img {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+}

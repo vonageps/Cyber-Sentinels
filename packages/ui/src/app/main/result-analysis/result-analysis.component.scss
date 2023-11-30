@@ -1,0 +1,228 @@
+@import "../../../assets/scss/variables.scss";
+
+.page-layout {
+  background-color: $grey-100;
+  padding-bottom: 2rem;
+  min-height: 100%;
+}
+
+.container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1232px;
+
+  .box {
+    padding: 1.5rem 0;
+
+    @media only screen and (max-width: $screen-md-max) {
+      padding: 1.5rem;
+    }
+  }
+}
+
+.job-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 2.25rem;
+
+  @media only screen and (max-width: $screen-xs) {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
+.text-right {
+  text-align: right;
+}
+
+.stats-div {
+  background-color: $color-primary;
+  padding-top: 3.375rem;
+  padding-bottom: 4.75rem;
+  background-image: url("../../../assets/images/bg-semi-circle.png"),
+    url("../../../assets/images/bg-circles.png"),
+    url("../../../assets/images/trophy-icon.png");
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: 0% 1%, 103% 166%, 95% 10%;
+
+  @media only screen and (max-width: $screen-md-max) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    background-image: none;
+  }
+  @media only screen and (max-width: $screen-xs) {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .stats-column {
+    color: #fff;
+
+    .value {
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.75rem;
+      margin-bottom: 0.25rem;
+
+      @media only screen and (max-width: $screen-sm-max) {
+        line-height: 1.35rem;
+      }
+    }
+
+    .prop {
+      font-size: 0.875rem;
+      font-weight: 300;
+      line-height: 1.125rem;
+    }
+
+    .result-div {
+      position: relative;
+
+      @media only screen and (max-width: $screen-sm-max) {
+        min-height: 62px;
+      }
+
+      &:not(:last-child) {
+        padding-right: 1.5rem;
+        margin-right: 1.5rem;
+
+        @media only screen and (max-width: $screen-sm-max) {
+          padding-right: 1rem;
+          margin-right: 1rem;
+        }
+
+        @media only screen and (max-width: $screen-xs) {
+          padding-right: 0;
+          margin-right: 0;
+        }
+      }
+
+      &:not(:last-child)::after {
+        content: "";
+        height: 100%;
+        width: 1px;
+        background-color: $medium-purple;
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        @media only screen and (max-width: $screen-xs) {
+          display: none;
+        }
+      }
+    }
+
+    .status {
+      background-color: #25d366;
+      padding: 0.625rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 0;
+      margin-left: 24px;
+
+      @media only screen and (max-width: $screen-sm-max) {
+        margin-left: 0;
+      }
+
+      img {
+        width: 24px;
+      }
+    }
+
+    .order1 {
+      @media only screen and (max-width: $screen-sm-max) {
+        order: 1;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid $medium-purple;
+      }
+    }
+
+    .order2 {
+      @media only screen and (max-width: $screen-sm-max) {
+        order: 2;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid $medium-purple;
+      }
+    }
+
+    .order3 {
+      @media only screen and (max-width: $screen-sm-max) {
+        order: 3;
+      }
+    }
+  }
+}
+
+.questionnaire-div {
+  margin-top: -2.5rem;
+  background-color: $white;
+  border-radius: 16px;
+  padding: 1.5rem;
+
+  @media only screen and (max-width: $screen-md-max) {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+
+  .heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .ques-div {
+    padding: 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid $grey-300;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .ques-text {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .ques-options {
+      margin-bottom: 1rem;
+      width: 60%;
+      @media only screen and (max-width: $screen-sm-max) {
+        width: 100%;
+      }
+    }
+
+    .ques-answers {
+      .badge {
+        font-size: 0.75rem;
+        color: $white;
+        padding: 0.375rem 0.75rem;
+        border-radius: 6px;
+
+        &.good {
+          background-color: $success;
+        }
+
+        &.bad {
+          background-color: $fail;
+        }
+
+        &.average {
+          background-color: $average;
+        }
+      }
+    }
+
+    .correct {
+      color: $success;
+    }
+
+    .incorrect {
+      color: $fail;
+    }
+  }
+}

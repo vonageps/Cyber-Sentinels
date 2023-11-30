@@ -1,0 +1,2 @@
+<app-setup-screen *ngIf="!joined" (joinMeeting)="joined=true"></app-setup-screen>
+<app-call-screen *ngIf="joined"></app-call-screen>

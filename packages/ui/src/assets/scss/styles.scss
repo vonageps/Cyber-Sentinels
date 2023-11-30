@@ -1,0 +1,104 @@
+@import "./variables.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 400;
+}
+
+.color-primary {
+  color: $color-primary !important;
+}
+.bg-color-primary {
+  background-color: $color-primary !important;
+}
+
+.color-lightgrey {
+  color: $text-color-light;
+}
+
+.color-black {
+  color: $black;
+}
+
+.color-white {
+  color: $white;
+}
+
+.mdc-button {
+  border-radius: 10px !important;
+}
+
+.btn-lg {
+  height: 48px !important;
+  padding: 0.75rem 1rem !important;
+  &.bg-color-primary:disabled {
+    background-color: $bt-bg-disabled !important;
+    color: $bt-color-disabled !important;
+  }
+}
+
+.subtitle-text {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.v-small-text {
+  font-size: 0.75rem;
+}
+
+.small-text {
+  font-size: 0.813rem;
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.mat-mdc-dialog-surface {
+  border-radius: 10px !important;
+}
+
+.mat-mdc-checkbox-checked .mdc-label {
+  color: $success;
+  font-weight: 500;
+}
+.mdc-checkbox .mdc-checkbox__background {
+  border-radius: 5px !important;
+}
+.mat-mdc-checkbox-checked .mdc-checkbox .mdc-checkbox__background {
+  background-color: $success !important;
+  border-color: $success !important;
+}
+.mat-mdc-form-field {
+  width: 100%;
+  .mat-mdc-form-field-infix {
+    padding-top: 10px !important;
+    padding-bottom: 4px !important;
+    min-height: 46px;
+  }
+}
+
+.light-purple {
+  background-color: $light-purple;
+}
+
+.light-red {
+  background-color: $light-red;
+}
+
+.light-green {
+  background-color: $light-green;
+}
+
+.light-amber {
+  background-color: $light-amber;
+}
+
+.dark-yellow {
+  background-color: $yellow-20-opacity;
+}
+
+.dark-blue {
+  background-color: $light-blue;
+}

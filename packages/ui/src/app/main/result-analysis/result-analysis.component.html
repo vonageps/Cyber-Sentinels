@@ -1,0 +1,134 @@
+<div class="page-layout">
+  <div class="container">
+    <div
+      class="box"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      fxLayoutGap="10px"
+    >
+      <div>
+        <div class="job-title">Full Stack Developer</div>
+        <div class="subtitle-text color-lightgrey">No. of questions: 10</div>
+      </div>
+      <div class="subtitle-text text-right">
+        <div>Attempted on</div>
+        <div>01 Dec, 2023 | 11:00 AM</div>
+      </div>
+    </div>
+  </div>
+  <div class="stats-div">
+    <div class="container">
+      <div
+        fxLayout="row wrap"
+        fxLayout.gt-sm="row"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap.gt-md="24px"
+        fxLayoutGap="16px"
+        class="stats-column"
+      >
+      <!-- column 1 -->
+        <div fxFlex="calc(50% - 16px)" fxFlex.gt-sm="20" class="order1">
+          <div class="value">Alex Costa</div>
+          <div class="prop">Full Stack Developer</div>
+        </div>
+        <!-- column 2 -->
+        <div
+          fxFlex="100"
+          fxFlex.gt-sm="60"
+          fxLayout="row"
+          fxLayout.lt-sm="row wrap"
+          fxLayoutAlign="space-between center"
+          class="order3"
+        >
+          <div class="result-div" fxFlex.lt-sm="50" fxFlex.lt-md="25">
+            <div class="value">92</div>
+            <div class="prop">Marks Obtained</div>
+          </div>
+          <div class="result-div"  fxFlex.lt-sm="50" fxFlex.lt-md="25">
+            <div class="value">75%</div>
+            <div class="prop">Avg Confidence</div>
+          </div>
+          <div class="result-div"  fxFlex.lt-sm="50" fxFlex.lt-md="25">
+            <div class="value">82%</div>
+            <div class="prop">Avg Language Proficiency</div>
+          </div>
+          <div class="result-div"  fxFlex.lt-sm="50" fxFlex.lt-md="25">
+            <div class="value">55 mins</div>
+            <div class="prop">Time Consumed</div>
+          </div>
+        </div>
+        <!-- column 3 -->
+        <div fxFlex="calc(50% - 16px)" fxFlex.gt-sm="20" class="order2" fxLayoutAlign.lt-md="end center" fxLayoutAlign.gt-md="none">
+          <div
+            fxFlex="none"
+            fxLayout="row"
+            class="status"
+            fxLayoutAlign="start center"
+            fxLayoutGap="10px"
+          >
+            <div class="status-icon">
+              <img
+                src="../../../../assets/images/check-circle-icon.svg"
+                alt="check-icon"
+              />
+            </div>
+            <div>Pass</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="questionnaire-div">
+      <div class="heading">Question Wise Analysis</div>
+      <div
+        class="ques-div"
+        fxLayout="column"
+        *ngFor="let questionnaire of questionnaires"
+      >
+        <div fxFlex="100" class="ques-text">
+          {{ questionnaire.question }}
+        </div>
+
+        <!-- Options -->
+        <div fxLayout="row wrap" class="ques-options">
+          <mat-checkbox
+            *ngFor="let option of questionnaire.options"
+            fxFlex="100"
+            fxFlex.gt-md="50"
+            [checked]="option.correct"
+          >
+            {{ option.text }}
+          </mat-checkbox>
+        </div>
+        <!-- answers -->
+        <div
+          class="ques-answers"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="10px"
+        >
+          <div>
+            <div *ngIf="isOptionCorrect" class="correct">Correct!</div>
+            <div *ngIf="!isOptionCorrect" class="incorrect">
+              <div>Incorrect!</div>
+              <div class="color-lightgrey">Correct Option: <span></span></div>
+            </div>
+          </div>
+          <div class="v-small-text text-right">
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+              fxLayoutGap="8px"
+            >
+              <div>Confidence Score</div>
+              <span class="badge good"
+                >{{ questionnaire.feedback.confidenceScore }}%</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
