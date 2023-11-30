@@ -1,0 +1,22 @@
+{
+    "defaultEnv": "master",
+    "master": {
+      "driver": "pg",
+      "host": {
+        "ENV": "MS_DB_HOST"
+      },
+      "port": {
+        "ENV": "MS_DB_PORT"
+      },
+      "user": {
+        "ENV": "MS_DB_USER"
+      },
+      "password": {
+        "ENV": "MS_DB_PASSWORD"
+      },
+      "database": {
+        "ENV": "MS_DB_DATABASE"
+      }
+    },
+    "sql-file": true
+}
