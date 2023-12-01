@@ -1,9 +1,10 @@
-import { Injectable } from "@angular/core";
-import { AnswerJudgement, CheckedAnswer, Question, Quiz } from "src/app/types";
+import { Injectable } from '@angular/core';
+import { AnswerJudgement, CheckedAnswer, Profile, Question, Quiz } from 'src/app/types';
 
 @Injectable()
 export class InterviewService {
   quiz?: Quiz;
+  profile?: Profile;
   currentState = 0;
   answerMap = new Map<
     Question,
@@ -16,6 +17,10 @@ export class InterviewService {
 
   feedQuiz(quiz: Quiz) {
     this.quiz = quiz;
+  }
+
+  feedProfile(profile: Profile) {
+    this.profile = profile;
   }
 
   welcome() {
@@ -73,10 +78,12 @@ export class InterviewService {
       total,
       correct,
       questions: this.quiz.questions.map((q) => ({
-        question: q.question,
+        question: q,
         answer: this.answerMap.get(q)?.answer,
         correct: this.answerMap.get(q)?.correct,
+        userAnswer: this.answerMap.get(q)?.userAnswer,
       })),
+      profile: this.profile
     };
   }
 

@@ -114,7 +114,10 @@
 
     .status {
       background-color: #25d366;
-      padding: 0.625rem;
+      &.fail {
+        background-color: rgb(246, 79, 79);
+      }
+      padding: 25px 35px;
       border-radius: 8px;
       font-size: 1rem;
       font-weight: 700;

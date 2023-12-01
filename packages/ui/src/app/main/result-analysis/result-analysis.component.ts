@@ -1,51 +1,61 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Profile } from 'src/app/types';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-result-analysis',
   templateUrl: './result-analysis.component.html',
-  styleUrls: ['./result-analysis.component.scss']
+  styleUrls: ['./result-analysis.component.scss'],
 })
 export class ResultAnalysisComponent {
-  isOptionCorrect = true;
-  questionnaires = [
-    {
-      question: '1. The purpose of the Front-end framework in Full stack development is ____.',
-      options: [
-        { text: 'To provide the client-side interface', correct: true },
-        { text: 'To manage the database', correct: false },
-        { text: 'To reduce the server load', correct: false },
-        { text: 'To send HTTP requests', correct: false },
-      ],
-      feedback: {
-        correct: 'Both A & C',
-        confidenceScore: 100,
-      },
-    },
-    {
-      question: '2. Amongst which of the following programming language is used as a server-side language?',
-      options: [
-        { text: 'Python.', correct: false },
-        { text: 'C++', correct: true },
-        { text: 'JavaScript', correct: false },
-        { text: 'Both A and C', correct: false },
-      ],
-      feedback: {
-        correct: 'Both A & C',
-        confidenceScore: 45,
-      },
-    },
-    {
-      question: '3. Database in Full stack development is used to ____.',
-      options: [
-        { text: 'Styling HTML pages', correct: false },
-        { text: 'Storing and retrieving data', correct: true },
-        { text: 'Handling errors on server-side', correct: false },
-        { text: 'Rendering web pages', correct: false },
-      ],
-      feedback: {
-        correct: 'Both A & C',
-        confidenceScore: 100,
-      },
-    },
-  ];
+  data: any;
+  passPercentage = environment.passPercentage;
+  pass = false;
+  questionnaires: any[] = [];
+  now = this.formatDate(Date.now());
+  profile?: Profile;
+  constructor(private readonly router: Router) {
+    this.data = this.router.getCurrentNavigation()!.extras.state;
+    this.profile = this.data.profile;
+    this.setPassStatus();
+    this.populateQuestionnaires();
+  }
+  populateQuestionnaires() {
+    this.questionnaires = [];
+    this.data.questions.forEach((q: any) => {
+      this.questionnaires.push({
+        question: q.question.question,
+        options: q.question.options.map((o: any, index: number) => ({
+          text: o,
+          checked: index === this.getAnswerIndex(q.answer),
+        })),
+        correct: q.question.options[this.getAnswerIndex(q.answer)] === q.question.answer || q.correct,
+        answer: q.question.answer,
+        userAnswer: q.userAnswer,
+        showString: !q.answer
+      });
+    });
+  }
+  setPassStatus() {
+    if ((this.data.correct / this.data.total) * 100 > this.passPercentage) {
+      this.pass = true;
+    }
+  }
+
+  getAnswerIndex(ans: string) {
+    return ['A', 'B', 'C', 'D'].indexOf(ans);
+  }
+
+  formatDate(dateNum: number) {
+    const date = new Date(dateNum);
+    let hours = date.getHours();
+    let minutes: string | number = date.getMinutes();
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+  }
 }

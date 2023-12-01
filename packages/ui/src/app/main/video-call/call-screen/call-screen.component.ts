@@ -205,7 +205,8 @@ export class CallScreenComponent implements AfterViewInit {
   }
 
   gotoResults() {
-    console.log(this.interviewService.result());
-    this.router.navigate(['main', 'result-analysis']);
+    this.router.navigate(['main', 'result-analysis'], {
+      state: this.interviewService.result()!,
+    });
   }
 }

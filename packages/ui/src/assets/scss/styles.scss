@@ -60,15 +60,23 @@ body {
 }
 
 .mat-mdc-checkbox-checked .mdc-label {
-  color: $success;
+  color: $fail;
   font-weight: 500;
+}
+mat-checkbox:not(.bad) {
+  .mat-mdc-checkbox-checked .mdc-label {
+    color: $success;
+  }
 }
 .mdc-checkbox .mdc-checkbox__background {
   border-radius: 5px !important;
 }
-.mat-mdc-checkbox-checked .mdc-checkbox .mdc-checkbox__background {
-  background-color: $success !important;
-  border-color: $success !important;
+
+mat-checkbox:not(.bad) {
+  .mat-mdc-checkbox-checked .mdc-checkbox .mdc-checkbox__background {
+    background-color: $success !important;
+    border-color: $success !important;
+  }
 }
 .mat-mdc-form-field {
   width: 100%;

@@ -7,12 +7,14 @@
       fxLayoutGap="10px"
     >
       <div>
-        <div class="job-title">Full Stack Developer</div>
-        <div class="subtitle-text color-lightgrey">No. of questions: 10</div>
+        <div class="job-title">{{profile?.name}}</div>
+        <div class="subtitle-text color-lightgrey">
+          No. of questions: {{ questionnaires.length }}
+        </div>
       </div>
       <div class="subtitle-text text-right">
         <div>Attempted on</div>
-        <div>01 Dec, 2023 | 11:00 AM</div>
+        <div>{{ now }}</div>
       </div>
     </div>
   </div>
@@ -26,10 +28,9 @@
         fxLayoutGap="16px"
         class="stats-column"
       >
-      <!-- column 1 -->
+        <!-- column 1 -->
         <div fxFlex="calc(50% - 16px)" fxFlex.gt-sm="20" class="order1">
-          <div class="value">Alex Costa</div>
-          <div class="prop">Full Stack Developer</div>
+          <div class="prop">{{profile?.name}}</div>
         </div>
         <!-- column 2 -->
         <div
@@ -41,38 +42,30 @@
           class="order3"
         >
           <div class="result-div" fxFlex.lt-sm="50" fxFlex.lt-md="25">
-            <div class="value">92</div>
+            <div class="value">{{ data.correct }} / {{ data.total }}</div>
             <div class="prop">Marks Obtained</div>
           </div>
-          <div class="result-div"  fxFlex.lt-sm="50" fxFlex.lt-md="25">
-            <div class="value">75%</div>
-            <div class="prop">Avg Confidence</div>
-          </div>
-          <div class="result-div"  fxFlex.lt-sm="50" fxFlex.lt-md="25">
-            <div class="value">82%</div>
-            <div class="prop">Avg Language Proficiency</div>
-          </div>
-          <div class="result-div"  fxFlex.lt-sm="50" fxFlex.lt-md="25">
-            <div class="value">55 mins</div>
-            <div class="prop">Time Consumed</div>
+          <div class="result-div" fxFlex.lt-sm="50" fxFlex.lt-md="25">
           </div>
         </div>
         <!-- column 3 -->
-        <div fxFlex="calc(50% - 16px)" fxFlex.gt-sm="20" class="order2" fxLayoutAlign.lt-md="end center" fxLayoutAlign.gt-md="none">
+        <div
+          fxFlex="calc(50% - 16px)"
+          fxFlex.gt-sm="20"
+          class="order2"
+          fxLayoutAlign.lt-md="end center"
+          fxLayoutAlign.gt-md="none"
+        >
           <div
             fxFlex="none"
             fxLayout="row"
             class="status"
+            [ngClass]="{ pass: pass, fail: !pass }"
             fxLayoutAlign="start center"
             fxLayoutGap="10px"
           >
-            <div class="status-icon">
-              <img
-                src="../../../../assets/images/check-circle-icon.svg"
-                alt="check-icon"
-              />
-            </div>
-            <div>Pass</div>
+            <div *ngIf="pass; else fail">Pass</div>
+            <ng-template #fail>Fail</ng-template>
           </div>
         </div>
       </div>
@@ -90,18 +83,18 @@
           {{ questionnaire.question }}
         </div>
 
-        <!-- Options -->
         <div fxLayout="row wrap" class="ques-options">
           <mat-checkbox
             *ngFor="let option of questionnaire.options"
             fxFlex="100"
             fxFlex.gt-md="50"
-            [checked]="option.correct"
+            [ngClass]="{ good: option.correct, bad: !option.correct }"
+            [checked]="option.checked"
+            [disabled]="true"
           >
             {{ option.text }}
           </mat-checkbox>
         </div>
-        <!-- answers -->
         <div
           class="ques-answers"
           fxLayout="row"
@@ -109,22 +102,13 @@
           fxLayoutGap="10px"
         >
           <div>
-            <div *ngIf="isOptionCorrect" class="correct">Correct!</div>
-            <div *ngIf="!isOptionCorrect" class="incorrect">
+            <div *ngIf="questionnaire.correct" class="correct">Correct!</div>
+            <div *ngIf="!questionnaire.correct" class="incorrect">
               <div>Incorrect!</div>
-              <div class="color-lightgrey">Correct Option: <span></span></div>
-            </div>
-          </div>
-          <div class="v-small-text text-right">
-            <div
-              fxLayout="row"
-              fxLayoutAlign="space-between center"
-              fxLayoutGap="8px"
-            >
-              <div>Confidence Score</div>
-              <span class="badge good"
-                >{{ questionnaire.feedback.confidenceScore }}%</span
-              >
+              <div *ngIf="questionnaire.showString">Your answer: {{questionnaire.userAnswer}}</div>
+              <div class="color-lightgrey">
+                Correct Option: <span>{{ questionnaire.answer }}</span>
+              </div>
             </div>
           </div>
         </div>
