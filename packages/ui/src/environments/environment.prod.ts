@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   // in percent
   cvThreshold: 70,
-  trulienceAgentId: "3931415216697001399",
+  trulienceAgentId: "137305965016138749",
   api: {
     video: "http://localhost:3000",
     opentok: {

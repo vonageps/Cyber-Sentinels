@@ -145,6 +145,44 @@
         "operationId": "VideoChatArchiveController.getArchives"
       }
     },
+    "/check-answer": {
+      "post": {
+        "x-controller-name": "QuizController",
+        "x-operation-name": "checkAnswer",
+        "tags": [
+          "QuizController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Returns analysis of the answer provided by the candidate",
+            "content": {}
+          },
+          "400": {
+            "description": "The syntax of the request entity is incorrect."
+          },
+          "401": {
+            "description": "Invalid Credentials."
+          },
+          "404": {
+            "description": "The entity requested does not exist."
+          },
+          "422": {
+            "description": "The syntax of the request entity is incorrect"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckAnswerDto"
+              }
+            }
+          }
+        },
+        "operationId": "QuizController.checkAnswer"
+      }
+    },
     "/ping": {
       "get": {
         "x-controller-name": "PingController",
@@ -171,7 +209,7 @@
     "/quiz": {
       "post": {
         "x-controller-name": "QuizController",
-        "x-operation-name": "sendOtp",
+        "x-operation-name": "generateQuiz",
         "tags": [
           "QuizController"
         ],
@@ -203,7 +241,7 @@
             }
           }
         },
-        "operationId": "QuizController.sendOtp"
+        "operationId": "QuizController.generateQuiz"
       }
     },
     "/session/{meetingLinkId}/attendees": {
@@ -547,6 +585,34 @@
         },
         "required": [
           "jobDescription"
+        ],
+        "additionalProperties": false
+      },
+      "CheckAnswerDto": {
+        "title": "CheckAnswerDto",
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "providedAnswer": {
+            "type": "string"
+          },
+          "expectedAnswer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "options",
+          "providedAnswer",
+          "expectedAnswer"
         ],
         "additionalProperties": false
       },

@@ -24,7 +24,7 @@ export const OpenAiConfig = {
         body: '{body}',
       },
       functions: {
-        getQuiz: ['body', 'token'],
+        prompt: ['body', 'token'],
       },
     },
   ],

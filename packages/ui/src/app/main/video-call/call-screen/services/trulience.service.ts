@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { TrulienceEvent, TrulienceEventType } from "./types";
 import { environment } from "src/environments/environment";
+import * as hark from "hark";
 declare const Trulience: any; //nosonar
 
 @Injectable({
@@ -10,6 +11,13 @@ declare const Trulience: any; //nosonar
 export class TrulienceService {
   trulience: any = null;
   avatarId = environment.trulienceAgentId;
+  loopRequestId?: number;
+  speaking$ = new Subject<TrulienceEvent>();
+  constructor() {}
+
+  listen() {
+    return this.speaking$.asObservable();
+  }
 
   connect() {
     const subject = new Subject<TrulienceEvent>();
@@ -18,10 +26,12 @@ export class TrulienceService {
       this.trulience.connectGateway();
     };
     const connected = () => {
+      console.log("connected");
       subject.next({
         event: TrulienceEventType.connected,
         data: this.trulience,
       });
+      this.setupAudioDetector(subject);
     };
 
     const disconnected = () => {
@@ -33,7 +43,7 @@ export class TrulienceService {
 
     const handleMessage = (e: any) => {
       // do nothing as of now
-      console.log(e);
+      console.log("message", e);
     };
 
     const authEvents = {
@@ -74,12 +84,45 @@ export class TrulienceService {
       .setAuthCallbacks(authEvents)
       .setWebSocketCallbacks(wsEvents)
       .setMediaCallbacks(mediaEvents)
-      .setRetry(false)
       .registerVideoElements(videoElements)
+      .setRetry(false)
       .build();
     this.trulience.authenticate();
-    this.trulience.connectGateway();
+    window.onunload = () => {
+      this.trulience.disconnectGateway();
+    };
     return subject.asObservable();
+  }
+
+  setupAudioDetector(subject: Subject<TrulienceEvent>) {
+    this.trulience._rtc.peerConnection.getStats().then((stats: any) => {
+      console.log("a");
+    });
+    const seech = hark(this.trulience._rtc.rvstream, {});
+    seech.on("speaking", () => {
+      subject.next({
+        event: TrulienceEventType.speakingstarted,
+        data: this.trulience,
+      });
+      this.speaking$.next({
+        event: TrulienceEventType.speakingstarted,
+        data: this.trulience,
+      });
+    });
+    seech.on("stopped_speaking", () => {
+      subject.next({
+        event: TrulienceEventType.speakingstopped,
+        data: this.trulience,
+      });
+      this.speaking$.next({
+        event: TrulienceEventType.speakingstopped,
+        data: this.trulience,
+      });
+    });
+  }
+
+  destroy() {
+    this.trulience.disconnectGateway();
   }
 
   speak(message: string) {

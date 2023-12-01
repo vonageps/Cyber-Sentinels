@@ -5,12 +5,13 @@ import {post, requestBody} from '@loopback/openapi-v3';
 import {CONTENT_TYPE, ErrorCodes, STATUS_CODE} from '@sourceloop/core';
 import {authorize} from 'loopback4-authorization';
 import {QuizGeneratorDto} from '../models';
-import {QuizGeneratorService} from '../services';
+import {QuizService} from '../services';
+import { CheckAnswerDto } from '../models/check-answer-dto.model';
 
 export class QuizController {
   constructor(
-    @service(QuizGeneratorService)
-    private readonly quizGeneratorService: QuizGeneratorService,
+    @service(QuizService)
+    private readonly quizGeneratorService: QuizService,
   ) {}
 
   @authorize({permissions: ['*']})
@@ -27,10 +28,31 @@ export class QuizController {
       ...ErrorCodes,
     },
   })
-  async sendOtp(
+  async generateQuiz(
     @requestBody()
     req: QuizGeneratorDto,
   ) {
     return this.quizGeneratorService.getQuiz(req);
+  }
+
+  @authorize({permissions: ['*']})
+  @post('/check-answer', {
+    description: '',
+    responses: {
+      [STATUS_CODE.OK]: {
+        description:
+          'Returns analysis of the answer provided by the candidate',
+        content: {
+          [CONTENT_TYPE.JSON]: Object,
+        },
+      },
+      ...ErrorCodes,
+    },
+  })
+  async checkAnswer(
+    @requestBody()
+    req: CheckAnswerDto,
+  ) {
+    return this.quizGeneratorService.checkAnswer(req);
   }
 }

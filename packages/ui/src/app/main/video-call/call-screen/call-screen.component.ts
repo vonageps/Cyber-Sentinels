@@ -1,9 +1,22 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { catchError, forkJoin, map, of, switchMap } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import {
+  catchError,
+  debounceTime,
+  filter,
+  forkJoin,
+  map,
+  of,
+  pairwise,
+  switchMap,
+  take,
+  takeUntil,
+  takeWhile,
+  tap,
+} from "rxjs";
 import { VideoMsService } from "src/app/services/api/ms/video-ms.service";
 import { OpentokService } from "./services/opentok.service";
-import { Quiz, SessionEvents } from "src/app/types";
+import { Question, Quiz, SessionEvents } from "src/app/types";
 import { TrulienceService } from "./services/trulience.service";
 import { ProfilesService } from "src/app/services/api/ms/profiles.service";
 import { TrulienceEventType } from "./services/types";
@@ -22,12 +35,19 @@ export class CallScreenComponent implements AfterViewInit {
     private activeRoute: ActivatedRoute,
     private trulience: TrulienceService,
     private profileService: ProfilesService,
-    private interviewService: InterviewService
+    private interviewService: InterviewService,
+    private router: Router
   ) {}
   error?: string;
+  loading = true;
+  processingAnswer = false;
   sessionId?: string;
   token?: string;
   quiz?: Quiz;
+  answer?: string;
+  currentQuestion: Question | null = null;
+  startQuestiong = false;
+  doneQuestiong = false;
 
   mute = true;
 
@@ -36,6 +56,9 @@ export class CallScreenComponent implements AfterViewInit {
 
   @ViewChild("candidateDiv")
   candidateDiv!: ElementRef;
+
+  @ViewChild("trulienceDiv")
+  trulienceDiv!: ElementRef;
 
   ngAfterViewInit() {
     this.activeRoute.paramMap
@@ -80,7 +103,25 @@ export class CallScreenComponent implements AfterViewInit {
           this.initPublisher(res.sessionId, res.token);
           this.trulience.connect().subscribe((v) => {
             if (v.event === TrulienceEventType.connected) {
-              this.initInterview();
+              this.trulience
+                .listen()
+                .pipe(debounceTime(2000))
+                .subscribe((v) => {
+                  if (v.event === TrulienceEventType.speakingstopped) {
+                    this.mute = false;
+                  } else {
+                    this.mute = true;
+                  }
+                  if (!this.mute && this.startQuestiong) {
+                    this.continueInterview();
+                    this.startQuestiong = false;
+                    this.mute = true;
+                  }
+                  if (!this.mute && this.doneQuestiong) {
+                    this.gotoResults();
+                  }
+                });
+              this.welcome();
             }
           });
         } else {
@@ -90,10 +131,24 @@ export class CallScreenComponent implements AfterViewInit {
       });
   }
 
-  initInterview() {
-    const message = this.interviewService.next();
-    if (message) {
-      this.trulience.speak(message);
+  welcome() {
+    this.loading = false;
+    const welcome = this.interviewService.welcome();
+    if (welcome) {
+      this.trulience.speak(welcome);
+      this.startQuestiong = true;
+    }
+  }
+
+  continueInterview() {
+    const next = this.interviewService.next();
+    if (next) {
+      this.currentQuestion = next;
+      this.trulience.speak([next.question, ...next.options].join(". "));
+    } else {
+      this.currentQuestion = null;
+      this.trulience.speak(this.interviewService.done());
+      this.doneQuestiong = true;
     }
   }
 
@@ -116,5 +171,34 @@ export class CallScreenComponent implements AfterViewInit {
   ngOnDestroy() {
     this.opentok.destroy();
     this.interviewService.reset();
+    this.trulience.destroy();
+  }
+
+  processAnswer() {
+    this.processingAnswer = true;
+    if (this.answer && this.currentQuestion) {
+      this.videoMs
+        .checkAnswer(
+          this.currentQuestion.question,
+          this.currentQuestion.answer,
+          this.currentQuestion.options,
+          this.answer
+        )
+        .subscribe((v) => {
+          this.answer = "";
+          this.mute = true;
+          this.processingAnswer = false;
+          if(this.currentQuestion) {
+            this.interviewService.answer(this.currentQuestion, v, this.answer);
+          }
+          this.currentQuestion = null;
+          this.continueInterview();
+        });
+    }
+  }
+
+  gotoResults() {
+    console.log(this.interviewService.result());
+    this.router.navigate(["main", "result-analysis"]);
   }
 }
