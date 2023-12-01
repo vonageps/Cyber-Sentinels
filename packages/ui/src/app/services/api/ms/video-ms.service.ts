@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
-import { ApiService } from "src/app/services";
-import { CheckedAnswer, SessionResponse } from "src/app/types";
-import { environment } from "src/environments/environment";
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { ApiService } from 'src/app/services';
+import { CheckedAnswer, SessionResponse } from 'src/app/types';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class VideoMsService {
   constructor(private api: ApiService) {}
@@ -14,7 +14,7 @@ export class VideoMsService {
       `${environment.api.video}/session`,
       {},
       {
-        responseType: "text",
+        responseType: 'text',
       }
     );
   }
@@ -32,12 +32,20 @@ export class VideoMsService {
     });
   }
 
-  checkAnswer(question: string, expectedAnswer: string, options: string[], answer: string) {
-    return this.api.post<CheckedAnswer>(`${environment.api.video}/check-answer`, {
-      question,
-      options,
-      providedAnswer: answer,
-      expectedAnswer: answer,
-    });
+  checkAnswer(
+    question: string,
+    expectedAnswer: string,
+    options: string[],
+    answer: string
+  ) {
+    return this.api.post<CheckedAnswer>(
+      `${environment.api.video}/check-answer`,
+      {
+        question,
+        options,
+        providedAnswer: answer,
+        expectedAnswer: expectedAnswer,
+      }
+    );
   }
 }

@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   catchError,
   debounceTime,
@@ -13,19 +13,19 @@ import {
   takeUntil,
   takeWhile,
   tap,
-} from "rxjs";
-import { VideoMsService } from "src/app/services/api/ms/video-ms.service";
-import { OpentokService } from "./services/opentok.service";
-import { Question, Quiz, SessionEvents } from "src/app/types";
-import { TrulienceService } from "./services/trulience.service";
-import { ProfilesService } from "src/app/services/api/ms/profiles.service";
-import { TrulienceEventType } from "./services/types";
-import { InterviewService } from "./services/interview.service";
+} from 'rxjs';
+import { VideoMsService } from 'src/app/services/api/ms/video-ms.service';
+import { OpentokService } from './services/opentok.service';
+import { Question, Quiz, SessionEvents } from 'src/app/types';
+import { TrulienceService } from './services/trulience.service';
+import { ProfilesService } from 'src/app/services/api/ms/profiles.service';
+import { TrulienceEventType } from './services/types';
+import { InterviewService } from './services/interview.service';
 
 @Component({
-  selector: "app-call-screen",
-  templateUrl: "./call-screen.component.html",
-  styleUrls: ["./call-screen.component.scss"],
+  selector: 'app-call-screen',
+  templateUrl: './call-screen.component.html',
+  styleUrls: ['./call-screen.component.scss'],
   providers: [OpentokService, InterviewService],
 })
 export class CallScreenComponent implements AfterViewInit {
@@ -51,21 +51,21 @@ export class CallScreenComponent implements AfterViewInit {
 
   mute = true;
 
-  @ViewChild("interviewerDiv")
+  @ViewChild('interviewerDiv')
   interviewerDiv!: ElementRef;
 
-  @ViewChild("candidateDiv")
+  @ViewChild('candidateDiv')
   candidateDiv!: ElementRef;
 
-  @ViewChild("trulienceDiv")
+  @ViewChild('trulienceDiv')
   trulienceDiv!: ElementRef;
 
   ngAfterViewInit() {
     this.activeRoute.paramMap
       .pipe(
         switchMap((params) => {
-          const meetingId = params.get("id");
-          const profileId = params.get("profile");
+          const meetingId = params.get('id');
+          const profileId = params.get('profile');
           if (meetingId && profileId) {
             return forkJoin([
               this.videoMs.getToken(meetingId),
@@ -85,13 +85,13 @@ export class CallScreenComponent implements AfterViewInit {
               ),
             ]);
           } else {
-            this.error = "Invalid meeting id";
+            this.error = 'Invalid meeting id';
             console.log(this.error);
             return of([null, null]);
           }
         }),
         catchError((err) => {
-          this.error = "Invalid meeting id";
+          this.error = 'Invalid meeting id';
           console.log(this.error);
           return of([null, null]);
         })
@@ -120,12 +120,19 @@ export class CallScreenComponent implements AfterViewInit {
                   if (!this.mute && this.doneQuestiong) {
                     this.gotoResults();
                   }
+                  if (!this.mute && this.currentQuestion) {
+                    const sub = this.trulience.listenForAns().subscribe((v) => {
+                      this.answer = v.data;
+                      this.processAnswer();
+                      sub.unsubscribe();
+                    });
+                  }
                 });
               this.welcome();
             }
           });
         } else {
-          this.error = !res ? "Invalid meeting id" : "Invalid profile id";
+          this.error = !res ? 'Invalid meeting id' : 'Invalid profile id';
           console.log(this.error);
         }
       });
@@ -144,7 +151,7 @@ export class CallScreenComponent implements AfterViewInit {
     const next = this.interviewService.next();
     if (next) {
       this.currentQuestion = next;
-      this.trulience.speak([next.question, ...next.options].join(". "));
+      this.trulience.speak([next.question, ...next.options].join('. '));
     } else {
       this.currentQuestion = null;
       this.trulience.speak(this.interviewService.done());
@@ -185,10 +192,10 @@ export class CallScreenComponent implements AfterViewInit {
           this.answer
         )
         .subscribe((v) => {
-          this.answer = "";
+          this.answer = '';
           this.mute = true;
           this.processingAnswer = false;
-          if(this.currentQuestion) {
+          if (this.currentQuestion) {
             this.interviewService.answer(this.currentQuestion, v, this.answer);
           }
           this.currentQuestion = null;
@@ -199,6 +206,6 @@ export class CallScreenComponent implements AfterViewInit {
 
   gotoResults() {
     console.log(this.interviewService.result());
-    this.router.navigate(["main", "result-analysis"]);
+    this.router.navigate(['main', 'result-analysis']);
   }
 }
